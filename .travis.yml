@@ -1,0 +1,25 @@
+sudo: required
+services:
+  - docker
+
+# Caching based on http://rundef.com/fast-travis-ci-docker-build
+cache:
+  directories:
+  - $CACHE_DIR
+before_install:
+  - if [ -f ${CACHE_FILE_PDFLATEX} ]; then gunzip -c ${CACHE_FILE_PDFLATEX} | docker load; fi
+env:
+  global:
+    - CACHE_DIR=$HOME/.cache/docker/images
+    - CACHE_FILE_PDFLATEX=$CACHE_DIR/pdflatex.tar.gz
+
+install:
+  # docker run and build commands
+  - mkdir -p $CACHE_DIR
+  - if [ ! -f ${CACHE_FILE_PDFLATEX} ]; then docker pull jonathanlking/pdflatex-base:latest && docker save jonathanlking/pdflatex-base:latest | gzip > ${CACHE_FILE_PDFLATEX}; fi
+
+script:
+  - mkdir _build && cd tex
+  - docker run --rm -v "$PWD":/usr/src/project -w /usr/src/project jonathanlking/pdflatex /bin/bash -c 'pdflatex report.tex'
+  - cp report.pdf ../_build/report.pdf
+  - cd ../

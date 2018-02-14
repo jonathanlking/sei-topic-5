@@ -20,7 +20,7 @@ install:
   fi
 script:
 - mkdir _build && cd tex
-- docker run --rm -v "$PWD":/usr/src/project -w /usr/src/project jonathanlking/pdflatex
+- docker run --rm -v "$PWD":/usr/src/project -w /usr/src/project jonathanlking/pdflatex-base
   /bin/bash -c 'pdflatex report.tex'
 - cp report.pdf ../_build/report.pdf
 - cd ../

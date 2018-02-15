@@ -1,3 +1,5 @@
+### *tl;dr:* our latest report is [here](http://s3.jlk.co/sei/report.pdf).
+
 ## Introduction
 
 We are [dogfooding](https://en.wikipedia.org/wiki/Eating_your_own_dog_food) a

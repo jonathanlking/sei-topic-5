@@ -1,37 +1,18 @@
-## Welcome to GitHub Pages
+## Introduction
 
-You can use the [editor on GitHub](https://github.com/jonathanlking/sei-topic-5/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+We are [dogfooding](https://en.wikipedia.org/wiki/Eating_your_own_dog_food) a
+build pipeline for continuous deployment of our topic report written in LaTeX.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+The pipeline is as follows:
 
-### Markdown
+1. A commit or pull request triggers Travis CI.
+2. Travis loads our `pdflatex-base` docker image (which can be cached).
+3. Travis runs `pdflatex` on our report and checks certain properties such as
+   page count and spelling.
+4. If successful and on the `release` branch, Travis will:
+    - Deploy the report to an Amazon S3 bucket at this [url](http://s3.jlk.co/sei/report.pdf).
+    - If a release tag has been set, the report will be uploaded to [GitHub
+      Releases](https://github.com/jonathanlking/sei-topic-5/releases).
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/jonathanlking/seii-topic-5/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+For more details please view the
+[`.travis.yml`](https://raw.githubusercontent.com/jonathanlking/sei-topic-5/release/.travis.yml) file in the repo.

@@ -9,12 +9,12 @@
   <body>
     <div class="main">
       <header class="front-matter">
-        <h1 class="title">{{ title }}</h1>
-        <h2 class="author">{{ author }}</h2>
-        <h3 class="email">(email: <code>{{ email }}</code>)</h3>
+        <h1 class="title">{{ site.title }}</h1>
+        <h2 class="author">{{ site.author }}</h2>
+        <h3 class="email">(email: <code>{{ site.email }}</code>)</h3>
       </header>
       <article>
-        <h2>{{ description }}</h2>
+        <h2>{{ site.description }}</h2>
         {{ content }}
       </article>
     </div>

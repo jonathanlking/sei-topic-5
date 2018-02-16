@@ -1,0 +1,39 @@
+body {
+  background: whitesmoke;
+}
+
+.main {
+  width: 80%;
+  max-width: 960px;
+  font-family: "Palatino", serif;
+  background: white;
+  color: #1e1e1e;
+  margin: 30px auto;
+  position: relative;
+  padding: 60px 20px 30px;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.front-matter {
+  text-align: center;
+  margin-bottom: 40px;
+
+  .title {
+    margin-bottom: 40px;
+  }
+
+  .author {
+    margin-bottom: 0;
+  }
+
+  .email {
+    color: #3f3f3f;
+    font-weight: normal;
+    font-style: italic;
+    margin-top: 10px;
+    & > code {
+      font-style: normal;
+    }
+  }
+}
+

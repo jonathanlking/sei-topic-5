@@ -1,5 +1,8 @@
 ### *tl;dr:* our latest report is [here](http://s3.jlk.co/sei/report.pdf).
 
+[![Build
+Status](https://travis-ci.com/jonathanlking/sei-topic-5.svg?token=yTGVwCpHZBQuhLqD9VAk&branch=release)](https://travis-ci.com/jonathanlking/sei-topic-5)
+
 ## Introduction
 
 We are [dogfooding](https://en.wikipedia.org/wiki/Eating_your_own_dog_food) a

@@ -18,12 +18,17 @@ install:
 - if [ ! -f ${CACHE_FILE_PDFLATEX} ]; then docker pull jonathanlking/pdflatex-base:latest
   && docker save jonathanlking/pdflatex-base:latest | gzip > ${CACHE_FILE_PDFLATEX};
   fi
+- git clone https://github.com/sstephenson/bats.git
+- cd bats && sudo ./install.sh /usr/local && cd ../
+- sudo apt-get install pdfgrep pdftk
+
 script:
 - mkdir _build && cd tex
 - docker run --rm -v "$PWD":/usr/src/project -w /usr/src/project jonathanlking/pdflatex-base
   /bin/bash -c 'pdflatex report.tex'
 - cp report.pdf ../_build/report.pdf
 - cd ../
+- bats tests
 deploy:
   - provider: s3
     access_key_id: AKIAJAZMF2XELR6XWO4A

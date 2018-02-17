@@ -4,28 +4,30 @@
 \usepackage{fancyhdr}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage[a4paper, margin=1in]{geometry}
 
-\newcommand{\question}{\section{}}
+\newcommand{\question}[1]{\section{#1}}
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{Question \thesection}
 \lhead{Elliot Greenwood and Jonathan King}
-\lfoot{Software Architecture}
+\lfoot{Continuous Delivery}
 \rfoot{Page \thepage}
 
 \begin{document}
 
-\question%
+\question{What are the problems that a build pipeline is trying to solve?}
 \input{question1}
-\clearpage
-
-\question%
-\input{question2}
 
 {\footnotesize
 \begin{thebibliography}{5}
 \end{thebibliography}
 }
+
+\clearpage
+\question{}
+\input{question2}
+
 
 \end{document}

@@ -1,0 +1,18 @@
+The main problems that having a build pipeline addresses are automation and ease of delivery.
+For anything much larger than a toy project you will likely want a script to run various tests,
+perhaps one command for all suites, another for just unit tests etc. but running lots of scripts can become a pain.
+Automating the fetching of dependencies, building the product, running various stages of tests, and collecting all of the artefacts that are produced can save developers a lot of time.
+By saving developers a lot of time it will encourage developers to make releases more often,
+perhaps with features turned off until the business is ready or another service has been updated.
+Having an automated build server can also provide performance benefits.
+Many services, such as Travis CI, have dedicated, specialised servers for building projects in parallel,
+as well as caching specific versions of dependencies,
+this means if new releases become available your build will not break.
+\par
+Most continuous integration tools also boast pipelines for deploying as well,
+this is really useful because it can add guarantees that the new software you've just deployed is exactly the same as the one you tested.
+Additionally if you have a staging server, a test server and multiple production servers,
+each for a different client manually deploying to each instance could be a lengthy process.
+Whereas using a tool such as Octopus, which affords you the luxury of repeatable,
+reliable deployments to multiple instances with just a few changes to some configuration variables.
+

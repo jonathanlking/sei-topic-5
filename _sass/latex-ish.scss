@@ -29,11 +29,7 @@ body {
   .email {
     color: #3f3f3f;
     font-weight: normal;
-    font-style: italic;
     margin-top: 10px;
-    & > code {
-      font-style: normal;
-    }
   }
 }
 

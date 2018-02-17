@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>{{page.title}}</title>
+    <title>{{site.title}}</title>
     <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}" type="text/css" media="screen" charset="utf-8">
   </head>
   <body>
@@ -11,7 +11,7 @@
       <header class="front-matter">
         <h1 class="title">{{ site.title }}</h1>
         <h2 class="author">{{ site.author }}</h2>
-        <h3 class="email">(email: <code>{{ site.email }}</code>)</h3>
+        <h3 class="email"><code>{{ site.email }}</code></h3>
       </header>
       <article>
         <h2>{{ site.description }}</h2>

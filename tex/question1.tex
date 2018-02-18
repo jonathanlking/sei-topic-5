@@ -1,14 +1,15 @@
 A build pipeline is a linked set of stages that represent the process of releasing a new feature (or bug fix etc.) into production.
-These stages are usually along the lines of:
-\begin{itemize*}
-  \item fetching dependencies
-  \item building the patch against the master branch/trunk
-  \item running automated test suites
-  \item bundling artefacts
-  \item deploying to a staging environment
-  \item deploying to a production environment
-\end{itemize*}.
-Build pipelines are beneficial because these stages can be run automatically as soon as the preceding step has completed,
+The key stages are usually:
+\begin{itemize}
+  \item Fetching dependencies (often fixing library versions e.g. JavaScript's \texttt{yarn.lock} or Haskell's \texttt{stack})
+  \item Building the patch against the master branch/trunk
+  \item Running automated test suites
+  \item Bundling artefacts (e.g. Docker image or \texttt{.ipa} file for iOS app store)
+  \item Deploying to a staging/production environment \textit{(optionally automated)}
+\end{itemize}
+
+To encourage rapid iteration, the cost (both in time and money) of building and deploying the \textit{product} needs to be low. 
+Automated build pipelines are beneficial because these stages can be run automatically as soon as the preceding step has completed,
 or manually or at a set time of the day.
 It completely depends on what your company/team wants to do, affording you great flexibility in your process.
 Within each stage you can have multiple steps that can run in parallel,
@@ -26,17 +27,14 @@ Some systems use an Infrastructure as Code style technique (Jenkins\footnoteref{
 others use graphical layouts (Team City\footnoteref{team-city} and Gitlab CI\footnoteref{gitlab-ci}),
 simpler systems such as Travis\footnote{} and Circle CI\footnote{} use simple config files.
 \par
-Using these tools and services boasts many benefits such as cached dependencies,
-for example in our build pipeline (Page 2) we use Travis to build and we are able to cache the core latex packages we would otherwise need to download.
-This caching can speed up the times of our builds, we were able to reduce our time down from 6 minutes to approximately 2 minutes.
-Additionally, it means that if somebody releases a new version of the \texttt{hyperref} package that has deprecated the \texttt{hidelinks}
-option that we use our cached versions will continue to be used, ensuring our build won't start passively failing.
-You can imagine in a more real world example this could be a npm package or something similar,
+One notable drawback of using a CI tool such as Travis, which builds your product in a isolated container, is the lack of persistent environment. This means fetching dependencies, which may take some time to download and install, has to be performed on every build. We encountered and addressed this by building a docker image for the \texttt{pdflatex} tool, which could then be easily cached by Travis (on AWS), reducing our build time down from 6 minutes to under 2 minutes.
+Additionally, as the \texttt{texlive-latex-base} package is downloaded and installed \textit{exactly once} when the docker image is built, our project is    immune to external changes to the package. 
+In a web application context this could apply to \texttt{npm} packages or something similar,
 where there are many packages that can take some time to download and install.
 \par
 Ideally after the build process has been completed you should have everything you need to deploy the newest version of your software~\cite{BruntonBuild}.
 This means that as much as possible, you include everything needed for the final host machine to run the application.
-Or this can mean bundled packages ready to be uploaded to a private npm server.
+Or this can mean bundled packages ready to be uploaded to a private \texttt{npm} server.
 In his blog post~\cite{BruntonBuild} Brunton-Spall comments on this and describes
 how if you are extremely unlucky you can have changes between testing and deploying if your artefacts are not immutable.
 \par
@@ -45,8 +43,8 @@ This means even if you only release to master once per week, say,
 you have somewhere that gives you an indication of what it will be like in production,
 and also whether or not anything appears to have broken that slipped through the testing-net.
 \par
-Due to the fact build pipelines offer reproducible builds you can deploy to multiple clients with ease and in parallel,
-by simply defining the configuration for the build in each case.
+%Due to the fact build pipelines offer reproducible builds you can deploy to multiple clients with ease and in parallel,
+%by simply defining the configuration for the build in each case.
 %%%%%%%%%%%
 % The main problems that having a build pipeline addresses are automation and ease of delivery.
 % For anything much larger than a toy project you will likely want a script to run various tests,

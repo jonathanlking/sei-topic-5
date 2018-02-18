@@ -2,10 +2,15 @@
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{fancyhdr}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage[inline]{enumitem}
 \usepackage[a4paper, margin=1in]{geometry}
+
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
 
 \newcommand{\question}[1]{\section{#1}}
 \pagestyle{fancy}
@@ -22,6 +27,11 @@
 
 {\footnotesize
 \begin{thebibliography}{5}
+  \bibitem{BruntonBuild}
+    Michael Brunton-Spall, 2016
+    \textbf{Build pipelines, deployment, and immutable artifacts}
+    \url{http://www.brunton-spall.co.uk/post/2016/08/24/build-pipelines/}
+    \textit{Date Accessed: 18 February 2018}
 \end{thebibliography}
 }
 

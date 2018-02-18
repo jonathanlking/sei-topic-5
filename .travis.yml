@@ -21,8 +21,8 @@ install:
 script:
 - mkdir _build && cd tex
 - docker run --rm -v "$PWD":/usr/src/project -w /usr/src/project jonathanlking/pdflatex-base
-  /bin/bash -c 'pdflatex report.tex'
-- cp report.pdf ../_build/report.pdf
+  /bin/bash -c 'pdflatex topic5.tex'
+- cp topic5.pdf ../_build/topic5.pdf
 - cd ../
 deploy:
   - provider: s3
@@ -42,7 +42,7 @@ deploy:
   - provider: releases
     api_key:
       secure: pbmQJZV0H2bnJZuBlU+8sZqnBzE3qpunY2Bf7zv5z4Kps7mL3m9Bt1ebmLKTq8nl1QtDrJ53dwcOiJrEtMWAlsZIAYOcIslBzlKMq8+Zdd+yFlxyWmptHWLHGaV0REJwgGSj+dGv1JmyMCYy3Jv/ZDfhAhnvRTi88c1POVm3KFGT/eLCVJZfw+9m2y8K/ug0pZe8Beif85IEMzdf5Lf88Sn2FAQp2fM5BGHkaTJf5/2ILnJHRamg+Cyn1LRt9L+Oak3/SoDhLzDqwYkHwBS2GwfWR1yIuUXItIq6HvCZU0ukjbfnj8fQPKgmbc/aIxTGZSmYc4Ty4C+hxkbEMEwqIjqCIiq5a16NcHLdiR6cnpjm0tybv9Vyzc0v0mDNUZRZIc8pvnt2nV3ccFjzhwXNJajiLCxdz83qH/DM1Yj1gCKXd9OEn6ZiKAmRwY4wse31dLXvr8JmyGIfV+5PjaNoLcAtRHofmJCrn0d1+LM5alYCT/izz/Trm2Hsg15+P9yjomzR9FCCWwhVQt74b4sgO/vyjREWsVhmJOptthVbeZF+QWJPKcPSe31tbC9L6sx5MGNXq4A65RShRQ6t4Dy5xKAJHEFnsuHkb99LyDY6VK1ow5ODVzntZYL1A/YxTa6P0aaY56BdR/1O9yCDQd098J706RsmB5ASNd3TMH7LH1g=
-    file: _build/report.pdf
+    file: _build/topic5.pdf
     skip_cleanup: true
     on:
       repo: jonathanlking/sei-topic-5

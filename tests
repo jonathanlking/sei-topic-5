@@ -1,23 +1,23 @@
 #!/usr/bin/env bats
 
 @test "PDF was produced" {
-  [ -f "./tex/report.pdf" ]
+  [ -f "./tex/topic5.pdf" ]
 }
 
 @test "test our names are in the file" {
-  result="$(cd tex; pdfgrep -q 'Elliot Greenwood' report.pdf; echo $?)"
+  result="$(cd tex; pdfgrep -q 'Elliot Greenwood' topic5.pdf; echo $?)"
   [ "$result" -eq 0 ]
-  result="$(cd tex; pdfgrep -q 'Jonathan King' report.pdf; echo $?)"
+  result="$(cd tex; pdfgrep -q 'Jonathan King' topic5.pdf; echo $?)"
   [ "$result" -eq 0 ]
 }
 
 
 @test "test our title is correct" {
-  result="$(cd tex; pdfgrep -q 'Continuous Delivery' report.pdf; echo $?)"
+  result="$(cd tex; pdfgrep -q 'Continuous Delivery' topic5.pdf; echo $?)"
   [ "$result" -eq 0 ]
 }
 
 @test "test we have 2 pages" {
-  result="$(pdftk ./tex/report.pdf dump_data | grep NumberOfPages | awk '{print $2}')"
+  result="$(pdftk ./tex/topic5.pdf dump_data | grep NumberOfPages | awk '{print $2}')"
   [ "$result" -eq 2 ]
 }

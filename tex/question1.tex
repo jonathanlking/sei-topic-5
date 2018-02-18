@@ -1,6 +1,7 @@
 The main problems that having a build pipeline addresses are automation and ease of delivery.
 For anything much larger than a toy project you will likely want a script to run various tests,
 perhaps one command for all suites, another for just unit tests etc. but running lots of scripts can become a pain.
+Continuous Integration (CI) tools can do away with many of these scripts by providing a user friendly way of setting up a build pipeline that automates lots of common tasks.
 Automating the fetching of dependencies, building the product, running various stages of tests, and collecting all of the artefacts that are produced can save developers a lot of time.
 By saving developers a lot of time it will encourage developers to make releases more often,
 perhaps with features turned off until the business is ready or another service has been updated.
@@ -15,4 +16,15 @@ Additionally if you have a staging server, a test server and multiple production
 each for a different client manually deploying to each instance could be a lengthy process.
 Whereas using a tool such as Octopus, which affords you the luxury of repeatable,
 reliable deployments to multiple instances with just a few changes to some configuration variables.
+\par
+Building (potential) releases more often means it is easier to pinpoint bugs in your code,
+this has been noted by several people~\cite{A,B,C} as well as personal experience working with these systems.
+It also means if something does break a build only that feature needs to be reverted, or forwardly-fixed~\cite{D}.
+Additionally, by running tests more frequently some analysis can be performed on the tests, for example flaky~\footnote{\url{https://www.jetbrains.com/teamcity/features/continuous_integration.html}}(or unstable) tests,
+this could be due to race conditions or network connections failing in unmocked tests,
+whatever the reason may be it can be really useful to identify these holes.
+Having, what can be known as, beta-builds (i.e. unreleased but working builds) can allow other teams to build there new features off these beta-builds,
+unblocking there development process and preparing both products for a combined release.
+This type of feature is supported by many CI tools, such as Team City~\footnote{\url{https://www.jetbrains.com/teamcity/}}.
+
 

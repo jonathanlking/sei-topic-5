@@ -1,30 +1,44 @@
-The main problems that having a build pipeline addresses are automation and ease of delivery.
-For anything much larger than a toy project you will likely want a script to run various tests,
-perhaps one command for all suites, another for just unit tests etc. but running lots of scripts can become a pain.
-Continuous Integration (CI) tools can do away with many of these scripts by providing a user friendly way of setting up a build pipeline that automates lots of common tasks.
-Automating the fetching of dependencies, building the product, running various stages of tests, and collecting all of the artefacts that are produced can save developers a lot of time.
-By saving developers a lot of time it will encourage developers to make releases more often,
-perhaps with features turned off until the business is ready or another service has been updated.
-Having an automated build server can also provide performance benefits.
-Many services, such as Travis CI, have dedicated, specialised servers for building projects in parallel,
-as well as caching specific versions of dependencies,
-this means if new releases become available your build will not break.
-\par
-Most continuous integration tools also boast pipelines for deploying as well,
-this is really useful because it can add guarantees that the new software you've just deployed is exactly the same as the one you tested.
-Additionally if you have a staging server, a test server and multiple production servers,
-each for a different client manually deploying to each instance could be a lengthy process.
-Whereas using a tool such as Octopus, which affords you the luxury of repeatable,
-reliable deployments to multiple instances with just a few changes to some configuration variables.
-\par
-Building (potential) releases more often means it is easier to pinpoint bugs in your code,
-this has been noted by several people~\cite{A,B,C} as well as personal experience working with these systems.
-It also means if something does break a build only that feature needs to be reverted, or forwardly-fixed~\cite{D}.
-Additionally, by running tests more frequently some analysis can be performed on the tests, for example flaky~\footnote{\url{https://www.jetbrains.com/teamcity/features/continuous_integration.html}}(or unstable) tests,
-this could be due to race conditions or network connections failing in unmocked tests,
-whatever the reason may be it can be really useful to identify these holes.
-Having, what can be known as, beta-builds (i.e. unreleased but working builds) can allow other teams to build there new features off these beta-builds,
-unblocking there development process and preparing both products for a combined release.
-This type of feature is supported by many CI tools, such as Team City~\footnote{\url{https://www.jetbrains.com/teamcity/}}.
+A build pipeline is a linked set of stages that represent the process of releasing a new feature (or bug fix etc.) into production.
+The key stages are usually, based on Figure 5.4 of Humble and Farley's book~\cite{DeployPipe}:
+\begin{itemize}
+  \item Fetching dependencies (often fixing library versions e.g. JavaScript's \texttt{yarn.lock} or Haskell's \texttt{stack})
+  \item Building the patch against the master branch/trunk
+  \item Running automated test suites
+  \item Bundling artefacts (e.g. Docker image or \texttt{.ipa} file for iOS app store)
+  \item Deploying to a staging/production environment \textit{(optionally automated)}
+\end{itemize}
 
-
+To encourage rapid iteration, the cost (both in time and money) of building and deploying the \textit{product} needs to be low.
+Automated build pipelines are beneficial because these stages can be run automatically as soon as the preceding step has completed,
+manually or at a set time of the day.
+It completely depends on what your company/team wants to do, affording you great flexibility in your process.
+Within each stage you can have multiple steps that can run in parallel,
+for example unit tests, feature tests and integration tests can all run at the same time.
+This can dramatically reduce the time of your builds.
+You also have some guarantees that each build is reliable and reproducible,
+meaning you spend less time every release cycle fixing issues with broken builds.
+This is more likely to encourage more frequent releases (or more frequent merges, if the releases are not instant).
+\par
+There are numerous tools and services that provide methods for doing all of this for you.
+You build pipeline could be an all in one solution such as Gitlab CI\footnote{\label{gitlab-ci}https://about.gitlab.com/features/gitlab-ci-cd/} or Jenkins\footnote{\label{jenkins}https://jenkins.io},
+or one that stretches across many services (perhaps using Github\footnote{\label{github}https://github.com},
+Team City\footnote{\label{team-city}https://www.jetbrains.com/teamcity/} for building and Octopus\footnote{\label{octopus}https://octopus.com} for deployment).
+All of these tools have different methods of specifying what happens during the build.
+Some systems use an Infrastructure as Code style technique (Jenkins\footnoteref{jenkins}),
+others use graphical layouts (Team City\footnoteref{team-city} and Gitlab CI\footnoteref{gitlab-ci}),
+simpler systems such as Travis\footnote{https://travis-ci.com} and Circle CI\footnote{https://circleci.com} use simple config files.
+\par
+One notable drawback of using a CI tool such as Travis, which builds your product in a isolated container, is the lack of persistent environment. This means fetching dependencies, which may take some time to download and install, has to be performed on every build. We encountered and addressed this by building a docker image for the \texttt{pdflatex} tool, which could then be easily cached by Travis (on AWS), reducing our build time down from 6 minutes to under 2 minutes.
+Additionally, as the \texttt{texlive-latex-base} package is downloaded and installed \textit{exactly once} when the docker image is built, our project is    immune to external changes to the package. 
+In a web application context this could apply to \texttt{npm} packages or something similar,
+where there are many packages that can take some time to download and install.
+\par
+Ideally after the build process has been completed you should have everything you need to deploy the newest version of your software~\cite{BruntonBuild}.
+This means that as much as possible, you include everything needed for the final host machine to run the application.
+Or this can mean bundled packages ready to be uploaded to a private \texttt{npm} server.
+In his blog post~\cite{BruntonBuild} Brunton-Spall comments on this and describes
+how if you are extremely unlucky you can have changes between testing and deploying if your artefacts are not immutable.
+\par
+If the builds are successful and the tests pass you can deploy to some staging servers you may have for internal testing, demoing or focus group testing etc.
+Due to the fact build pipelines offer reproducible builds you can deploy to multiple clients or demo environments with ease and in parallel,
+by simply defining the configuration for the build in each case.

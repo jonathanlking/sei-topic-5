@@ -21,7 +21,7 @@ install:
 script:
 - mkdir _build && cd tex
 - docker run --rm -v "$PWD":/usr/src/project -w /usr/src/project jonathanlking/pdflatex-base
-  /bin/bash -c 'pdflatex topic5.tex'
+  /bin/bash -c 'pdflatex topic5.tex && pdflatex topic5.tex'
 - cp topic5.pdf ../_build/topic5.pdf
 - cd ../
 deploy:

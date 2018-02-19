@@ -1,0 +1,38 @@
+digraph {
+    node[shape="box", style="rounded"]
+    new_feature; travis_build; travis_test; deploy_s3;
+    create_release; end;
+
+    node[shape="diamond", style=""]
+    is_tagged;
+
+    node[shape="parallelogram", style=""]
+    code; make_pr; merge;
+
+    new_feature -> code;
+    code -> make_pr;
+    make_pr -> travis_build;
+    travis_test -> travis_build[dir=back];
+    travis_test -> merge;
+    merge -> deploy_s3;
+    deploy_s3 -> end;
+    merge -> is_tagged;
+    is_tagged -> create_release[label="yes"];
+    is_tagged -> end[label="no"];
+    create_release -> end;
+
+    new_feature[label="New Feature"];
+    travis_build[label="Travis builds using\ncustom docker image"];
+    travis_test[label="Travis runs test script"];
+    deploy_s3[label="Travis publishes\nnew report to s3"];
+    create_release[label="Tagged release is\ncreated on GitHub"];
+    is_tagged[label="Is commit\ntagged?"];
+    make_pr[label="Make Pull Request"];
+    code[label="Code"];
+    merge[label="Merge Pull Request"];
+
+    {rank=same; new_feature code make_pr};
+    {rank=same; travis_test travis_build};
+    {rank=same; deploy_s3 is_tagged};
+    {rank=same; end create_release};
+}

@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{hyperref}
+
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
+
+\newcommand{\question}[1]{\section{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Question \thesection}
+\lhead{Elliot Greenwood and Jonathan King}
+\lfoot{Continuous Delivery}
+\rfoot{Page \thepage}
+
+\begin{document}
+
+\question{What are the problems that a build pipeline is trying to solve?}
+\input{question1}
+
+{\footnotesize
+\begin{thebibliography}{5}
+    \bibitem{DeployPipe}
+    Humble J, Farley D. \textbf{Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation}
+    (Adobe Reader). Pearson Education; 2010 Jul 27.
+  \bibitem{BruntonBuild}
+    Michael Brunton-Spall, 2016
+    \textbf{Build pipelines, deployment, and immutable artifacts}
+    \url{http://www.brunton-spall.co.uk/post/2016/08/24/build-pipelines/}
+    \textit{Date Accessed: 18 February 2018}
+
+\end{thebibliography}
+}
+
+\clearpage
+\question{}
+\input{question2}
+
+
+\end{document}

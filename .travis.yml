@@ -18,17 +18,22 @@ install:
 - if [ ! -f ${CACHE_FILE_PDFLATEX} ]; then docker pull jonathanlking/pdflatex-base:latest
   && docker save jonathanlking/pdflatex-base:latest | gzip > ${CACHE_FILE_PDFLATEX};
   fi
+- git clone https://github.com/sstephenson/bats.git
+- cd bats && sudo ./install.sh /usr/local && cd ../
+- sudo apt-get install pdfgrep pdftk
+
 script:
 - mkdir _build && cd tex
 - docker run --rm -v "$PWD":/usr/src/project -w /usr/src/project jonathanlking/pdflatex-base
-  /bin/bash -c 'pdflatex report.tex'
-- cp report.pdf ../_build/report.pdf
+  /bin/bash -c 'pdflatex topic5.tex && pdflatex topic5.tex'
+- cp topic5.pdf ../_build/topic5.pdf
 - cd ../
+- bats tests
 deploy:
   - provider: s3
     access_key_id: AKIAJAZMF2XELR6XWO4A
     secret_access_key:
-      secure: QwvgnE/qPa2JcsBJ7Gz18gNkU7BpUIKBCaqSAA7atHweWNqEDiuPVlpgIE9bkNwJ2rc6GEDw1crsyNn7ve6sKmq/xwP9XJxOIcDYcRnoBfxZ9jkxPPoDgxqGkiiU8H/H5BPj0lS+JdmWM2kaLI7GhJYDw1A7gYNn06f3+ieBfnYlYBFgOymD98k/4dQHADyJLAPzdVdI2hJeo6fUqb2W1ynFoxDjJcQ5+8V3LQT1PqTl+6S1hW8U1BBLnaI6g3uygAhZL1izKU/W+Qw+kEtNMRfvlmWJCQbMVHjpfozAWZw+orpj/TFMFtXSeN9XM4aNHHFcTls2bt5CGw3lP2hM8tCOeToHdzModcqImfxi3wsswnlGGfZAgEHHgvQvz/e+dqKq5M9PGg381ZRCd9FinJ1SrAAlTjCuh9/xL5hrwjIA7GgjDz/YY59pGChRFwAgpy/kw+4MOU/NJQVjym7NbktrTYktVGTRygLf6GLyJPmaS0HpQ9ElZpde0CSPRH4s3RE+fYn4JBDCxhPIJZ7o3O+5T6OaWz9zhZE7Zi/CuRZlAEcfI4/NXErEfB4NOONWbWohqXRdnAzWIvyDsb1QpzbUqAtwRoVg1LpRTMW3zpWkcK7iRhkYmcpo/ENNOJriz/Wq+4w6cvM3cpvL+k5q2PWh0mWD2aMT/Wi+lahWTYE=
+      secure: gzwu7XwMx8XQLR2LfZ+pTLlDOAF56AJ1/sBzc1ntcd92gTmlSy4+dLJcAtmIZL39H/L8jAM4AnyltXDKbhwocgU/4XFbNLnMDYNm76gQziYh2/Auh02q88bF6YdTwQA55KJgtrBA+lxiB92EtrrQ6qfaSLHuBa5LbAizANXabXG40NIVWdQmc0cX8s1r22vCzigrj+JYp7EYYUH0TidJan6a8/3ZxjNNZ/3Te8Z+FMgJ4e8UCD3uRKYGm0D4XdemZv0SVxCZoBrBAFC966LF++UiKym0yj+Xd0Cgvct4NrV/AcdSimOt7lA5cfWHyPxl6ASRmzauc4NNWsOqXHErrPsh+p6F3K2VIRZZ7IUC93jG8WWGqdhwgJ0E2FmLmfnuRrJ6ffrhcU+v+tG6WrC2m6Z6oCg0YNNErVqvxTJ38gqRoIVtOtvXex7sFzCiwdy9PMJaW9dWr4HQWy4oxcWgWqpJSgY1ntXew3yNxOkQZCFOW52IavYukABLX4js5wokomhsvWNYq1eCxwtUfwWgZo62aDyAlJ0WLjuFBHrLObxxatoUyjiY9WIWgVqo6xOprLxk7s58Q1WQHmXJsHmSXWmzy4BVhJZEWwZLykXglCxq+myeZoXwr+Em5S5jiycWK9w8pXB81xsv5vEF/tRLTz5n5yjJO/ZKVpJmez0yxy4=
     bucket: s3.jlk.co
     region: eu-west-2
     local-dir: _build
@@ -42,7 +47,7 @@ deploy:
   - provider: releases
     api_key:
       secure: pbmQJZV0H2bnJZuBlU+8sZqnBzE3qpunY2Bf7zv5z4Kps7mL3m9Bt1ebmLKTq8nl1QtDrJ53dwcOiJrEtMWAlsZIAYOcIslBzlKMq8+Zdd+yFlxyWmptHWLHGaV0REJwgGSj+dGv1JmyMCYy3Jv/ZDfhAhnvRTi88c1POVm3KFGT/eLCVJZfw+9m2y8K/ug0pZe8Beif85IEMzdf5Lf88Sn2FAQp2fM5BGHkaTJf5/2ILnJHRamg+Cyn1LRt9L+Oak3/SoDhLzDqwYkHwBS2GwfWR1yIuUXItIq6HvCZU0ukjbfnj8fQPKgmbc/aIxTGZSmYc4Ty4C+hxkbEMEwqIjqCIiq5a16NcHLdiR6cnpjm0tybv9Vyzc0v0mDNUZRZIc8pvnt2nV3ccFjzhwXNJajiLCxdz83qH/DM1Yj1gCKXd9OEn6ZiKAmRwY4wse31dLXvr8JmyGIfV+5PjaNoLcAtRHofmJCrn0d1+LM5alYCT/izz/Trm2Hsg15+P9yjomzR9FCCWwhVQt74b4sgO/vyjREWsVhmJOptthVbeZF+QWJPKcPSe31tbC9L6sx5MGNXq4A65RShRQ6t4Dy5xKAJHEFnsuHkb99LyDY6VK1ow5ODVzntZYL1A/YxTa6P0aaY56BdR/1O9yCDQd098J706RsmB5ASNd3TMH7LH1g=
-    file: _build/report.pdf
+    file: _build/topic5.pdf
     skip_cleanup: true
     on:
       repo: jonathanlking/sei-topic-5
